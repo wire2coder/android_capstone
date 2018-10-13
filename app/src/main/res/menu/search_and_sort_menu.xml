@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/item_search_menu"
+        android:icon="@drawable/ic_baseline_search_24px"
+        android:title="@string/search"
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        />
+
+    <item
+        android:id="@+id/item_sort_reddit_post"
+        android:icon="@drawable/ic_twotone_sort_24px"
+        android:title="@string/sort_posts_by"
+        app:showAsAction="always"
+        >
+
+        <menu>
+
+            <item
+                android:id="@+id/item_sort_new"
+                android:icon="@drawable/ic_baseline_fiber_new_24px"
+                android:title="@string/new_post"
+                 />
+
+            <item
+                android:id="@+id/item_sort_hot"
+                android:icon="@drawable/ic_twotone_whatshot_24px"
+                android:title="@string/hot_post" />
+
+        </menu>
+
+    </item>
+
+</menu>

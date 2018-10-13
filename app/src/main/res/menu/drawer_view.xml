@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<!--https://developer.android.com/training/implementing-navigation/nav-drawer-->
+<!--this file is for activity_main.xml >> DrawerLayout -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+
+    <group
+        android:id="@+id/group_favorite"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/action_favorites"
+            android:title="@string/favorited_posts" />
+
+    </group>
+
+    <group android:id="@+id/group_sub_reddits" />
+
+</menu>
+
+
+
