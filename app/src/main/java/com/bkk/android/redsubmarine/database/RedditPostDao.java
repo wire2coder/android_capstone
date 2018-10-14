@@ -1,8 +1,10 @@
 package com.bkk.android.redsubmarine.database;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
@@ -15,12 +17,14 @@ import java.util.List;
 @Dao
 public interface RedditPostDao {
 
-    // error: Not sure how to convert a Cursor to this method's return type
+    // DONE: submission1, adding LiveData
     @Query("SELECT * FROM redditpost ORDER BY id")
-//    ArrayList<RedditPostEntry> loadAllSavedRedditPost(); << only List can you use in "DAO"
+    // only LIST can be use in "DAO"
     List<RedditPostEntry> loadAllSavedRedditPost();
+//    LiveData< List<RedditPostEntry> > loadAllSavedRedditPost();
 
-    @Insert()
+    // don't addeding the same Reddit post twice
+    @Insert( onConflict = OnConflictStrategy.REPLACE)
     void insertRedditPost(RedditPostEntry redditPostEntry);
 
 //    @Update()

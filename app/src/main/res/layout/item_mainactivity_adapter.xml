@@ -55,7 +55,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="votes"
+                android:text="@string/votes"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
 
@@ -71,7 +71,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="comments"
+                android:text="@string/comments"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 />
 
@@ -80,7 +80,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="r/funny"
+                android:text="@string/r_test"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
         </LinearLayout>

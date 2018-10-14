@@ -55,7 +55,14 @@
 
     <!---->
     <string translatable="false" name="data_update_key">com.bkk.android.redsubmarine.ACTION_DATA_UPDATED</string>
-    <string translatable="true" name="drawer_open">drawer_open</string>
-    <string translatable="true" name="drawer_close">drawer_close</string>
+    <string translatable="false" name="drawer_open">drawer_open</string>
+    <string translatable="false" name="drawer_close">drawer_close</string>
+
+
+    <!-- item_mainactivity_adapter.xml -->
+    <string translatable="false" name="votes">votes</string>
+    <string translatable="false" name="comments">comments</string>
+    <string translatable="false" name="r_test">r/test</string>
+
 
 </resources>

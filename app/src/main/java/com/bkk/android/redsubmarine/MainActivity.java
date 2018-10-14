@@ -1,9 +1,12 @@
 package com.bkk.android.redsubmarine;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -138,11 +141,13 @@ public class MainActivity extends AppCompatActivity {
                             redditPosts.clear();
                             Log.d(LOG_TAG, "redditPosts.clear() ");
 
-                            // get data from database
-                            mAppDatabase1.redditPostDao().loadAllSavedRedditPost();
 
-                            // "initLoader"
-                            ArrayList<RedditPostEntry> asdf1 =  (ArrayList) mAppDatabase1.redditPostDao().loadAllSavedRedditPost();
+                            //TODO: wrap these into a function
+
+                            // get data from database
+//                            LiveData< List<RedditPostEntry> > asdf1 = mAppDatabase1.redditPostDao().loadAllSavedRedditPost();
+                            List<RedditPostEntry> asdf1 = mAppDatabase1.redditPostDao().loadAllSavedRedditPost();
+
 
                             // need a for loop to loop through ArrayList
                             for (int x=0; x < asdf1.size(); x++) {

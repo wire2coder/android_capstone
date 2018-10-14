@@ -67,6 +67,7 @@ public class RedsubmarineWidget extends AppWidgetProvider {
     // this goes to RedWidgetRemoteViewServices.java
     private void setRemoteAdapter(Context context, @NonNull final RemoteViews views) {
 
+        // TODO: 10/14 disable this for now
         views.setRemoteAdapter(
                 R.id.widget_item_list_view1
                 , new Intent(context, RedWidgetRemoteViewServices.class) );

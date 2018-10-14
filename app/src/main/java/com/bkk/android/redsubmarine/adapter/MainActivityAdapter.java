@@ -83,6 +83,9 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
         holder.tv_post_title.setText(redditPost.getTitle());
 
         try {
+
+            // TODO: submission 1, checking if we have any images for a Reddit post
+
             // use Picasso here instead of Volley ImageLoader
             Picasso.get()
                 .load(redditPost.getThumbnail())
