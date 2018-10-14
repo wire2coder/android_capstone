@@ -2,6 +2,7 @@ package com.bkk.android.redsubmarine;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -32,6 +33,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bkk.android.redsubmarine.adapter.MainActivityAdapter;
 import com.bkk.android.redsubmarine.database.AppDatabase;
+import com.bkk.android.redsubmarine.database.MainViewModel;
 import com.bkk.android.redsubmarine.database.RedditPostEntry;
 import com.bkk.android.redsubmarine.firebase.ReminderService;
 import com.bkk.android.redsubmarine.model.RedditPost;
@@ -141,9 +143,9 @@ public class MainActivity extends AppCompatActivity {
                             redditPosts.clear();
                             Log.d(LOG_TAG, "redditPosts.clear() ");
 
-                            // TODO: here!
+
                             // getting data from Database, and update the Adapter
-                            getSavedRedditPosts();
+                            getSavedRedditPostsFromViewModel();
 
                             // set the title of the "top bar"
                             toolbar.setTitle( getString(R.string.favorited_posts) );
@@ -186,13 +188,18 @@ public class MainActivity extends AppCompatActivity {
 
 
     // helper
-    private void getSavedRedditPosts() {
+    private void getSavedRedditPostsFromViewModel() {
 
-        // get data from database, adding LiveData to the results
-        LiveData< List<RedditPostEntry> > asdf11 = mAppDatabase1.redditPostDao().loadAllSavedRedditPost();
+        // LiveData only
+//        LiveData< List<RedditPostEntry> > asdf11 = mAppDatabase1.redditPostDao().loadAllSavedRedditPost();
+//        Log.d(LOG_TAG, "Actively retrieving the tasks from the Database");
+//        asdf11.observe(MainActivity.this, new Observer<List<RedditPostEntry>>() {
 
-        // adding observer to the results
-        asdf11.observe(MainActivity.this, new Observer<List<RedditPostEntry>>() {
+        // get data from database, store the results inside "MainViewModel"
+         MainViewModel mainViewModel1 = ViewModelProviders.of(MainActivity.this).get(MainViewModel.class);
+
+         // adding observer to the results
+        mainViewModel1.getAllSavedPostsFromViewModel().observe(MainActivity.this, new Observer<List<RedditPostEntry>>() {
 
             @Override
             public void onChanged(@Nullable List<RedditPostEntry> asdf1) {
@@ -226,8 +233,8 @@ public class MainActivity extends AppCompatActivity {
 
             } // onChanged()
 
-        }); // asdf11.observe
-    } // getSavedRedditPosts()
+        }); // mainViewModel1.observe
+    } // getSavedRedditPostsFromViewModel()
 
 
     private void makeAToolBar() {

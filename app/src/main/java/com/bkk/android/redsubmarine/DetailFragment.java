@@ -1,10 +1,13 @@
 package com.bkk.android.redsubmarine;
 
 import android.app.Activity;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +24,7 @@ import android.widget.Toast;
 
 import com.bkk.android.redsubmarine.adapter.RedditCommentsAdapter;
 import com.bkk.android.redsubmarine.database.AppDatabase;
+import com.bkk.android.redsubmarine.database.MainViewModel;
 import com.bkk.android.redsubmarine.database.RedditPostEntry;
 import com.bkk.android.redsubmarine.model.RedditComments;
 import com.bkk.android.redsubmarine.model.RedditPost;
@@ -35,6 +39,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -47,6 +52,7 @@ public class DetailFragment extends Fragment {
     private static final String LOG_TAG = DetailFragment.class.getSimpleName();
 
     Boolean isFaved;
+    private RedditPostEntry redditPostEntry11;
 
     ArrayList<RedditComments> mComments = new ArrayList<>();
     RedditCommentsAdapter redditCommentsAdapter;
@@ -100,21 +106,37 @@ public class DetailFragment extends Fragment {
         tv_comments_count.setText( String.valueOf(redditPost1.getNumberOfComments()) );
         tv_post_title.setText(redditPost1.getTitle());
 
+
         // getting a copy of Room database
         mDb = AppDatabase.getsInstance( activity1.getApplicationContext() );
 
         // DONE: 10/2 read from database here and check do database reading here, get the ID of this post and load it to check if it is "Favorited"
-        final RedditPostEntry redditPostEntry11 = mDb.redditPostDao().loadRedditPostEntryById( redditPost1.getId()  );
+        // final RedditPostEntry redditPostEntry11 = mDb.redditPostDao().loadRedditPostEntryById( redditPost1.getId()  );
 
-        if (redditPostEntry11 != null ) {
-            Log.d(LOG_TAG, String.valueOf( redditPostEntry11.getId() ) );
-            isFaved = true;
-            save_pic_button.setChecked(true);
-        } else {
-//            Toast.makeText(getContext(), "redditPostEntry11 does not exist", Toast.LENGTH_SHORT).show();
-            isFaved = false;
-            save_pic_button.setChecked(false);
-        }
+
+        // DONE: switch to ViewModel instead
+        MainViewModel mainViewModel1 = ViewModelProviders.of(DetailFragment.this).get(MainViewModel.class);
+        mainViewModel1.getRedditPostById( redditPost1.getId() ).observe(DetailFragment.this
+                ,new Observer< RedditPostEntry >() {
+
+                    @Override
+                    public void onChanged(@Nullable RedditPostEntry redditPostEntry) {
+
+                        redditPostEntry11 = redditPostEntry;
+
+                        if (redditPostEntry11 != null ) {
+                            Log.d(LOG_TAG, String.valueOf( redditPostEntry11.getId() ) );
+                            isFaved = true;
+                            save_pic_button.setChecked(true);
+                        } else {
+//                            Toast.makeText(getContext(), "redditPostEntry11 does not exist", Toast.LENGTH_SHORT).show();
+                            isFaved = false;
+                            save_pic_button.setChecked(false);
+                        } // else
+
+                    } // onChanged()
+
+                }); // new Observer
 
 
         // https://stackoverflow.com/questions/21579918/retrieving-comments-from-reddits-api
