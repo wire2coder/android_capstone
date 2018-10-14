@@ -42,7 +42,7 @@ public class RedWidgetRemoteViewServices extends RemoteViewsService {
 
                 // Android Room
                 mDb = AppDatabase.getsInstance( getBaseContext().getApplicationContext() );
-                asdf1 = mDb.redditPostDao().loadAllSavedRedditPost();
+                asdf1 = mDb.redditPostDao().loadAllSavedRedditPostWidget();
 
             } // onDataSetChanged()
 

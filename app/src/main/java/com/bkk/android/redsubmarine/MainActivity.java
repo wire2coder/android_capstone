@@ -141,40 +141,9 @@ public class MainActivity extends AppCompatActivity {
                             redditPosts.clear();
                             Log.d(LOG_TAG, "redditPosts.clear() ");
 
-
-                            //TODO: wrap these into a function
-
-                            // get data from database
-//                            LiveData< List<RedditPostEntry> > asdf1 = mAppDatabase1.redditPostDao().loadAllSavedRedditPost();
-                            List<RedditPostEntry> asdf1 = mAppDatabase1.redditPostDao().loadAllSavedRedditPost();
-
-
-                            // need a for loop to loop through ArrayList
-                            for (int x=0; x < asdf1.size(); x++) {
-                                asdf1.get(x).getId();
-                                Log.d(LOG_TAG, "asdf1.getId() " + String.valueOf(asdf1.get(x).getId()));
-
-                                RedditPost redditPost = new RedditPost(
-                                        asdf1.get(x).getTitle(),
-                                        asdf1.get(x).getThumbnail(),
-                                        asdf1.get(x).getUrl(),
-                                        asdf1.get(x).getSubreddit(),
-                                        asdf1.get(x).getAuthor(),
-                                        asdf1.get(x).getPermalink(),
-                                        asdf1.get(x).getPost_id(),
-                                        asdf1.get(x).getSubreddit_name_prefixed(),
-                                        asdf1.get(x).getScore(),
-                                        asdf1.get(x).getNumberOfComments(),
-                                        asdf1.get(x).getPostedDate(),
-                                        asdf1.get(x).getOver18()
-                                );
-
-                                // now add to existing array list
-                                redditPosts.add(redditPost);
-                            } // for
-
-                            // now put ArrayList into Adapter
-                            mAdapter.swapData(redditPosts);
+                            // TODO: here!
+                            // getting data from Database, and update the Adapter
+                            getSavedRedditPosts();
 
                             // set the title of the "top bar"
                             toolbar.setTitle( getString(R.string.favorited_posts) );
@@ -214,6 +183,51 @@ public class MainActivity extends AppCompatActivity {
         updateMainActivity(Strings.HOME);
 
     } // onCreate
+
+
+    // helper
+    private void getSavedRedditPosts() {
+
+        // get data from database, adding LiveData to the results
+        LiveData< List<RedditPostEntry> > asdf11 = mAppDatabase1.redditPostDao().loadAllSavedRedditPost();
+
+        // adding observer to the results
+        asdf11.observe(MainActivity.this, new Observer<List<RedditPostEntry>>() {
+
+            @Override
+            public void onChanged(@Nullable List<RedditPostEntry> asdf1) {
+
+                // need a for loop to loop through ArrayList
+                for (int x=0; x < asdf1.size(); x++) {
+                    asdf1.get(x).getId();
+                    Log.d(LOG_TAG, "asdf1.getId() " + String.valueOf(asdf1.get(x).getId()));
+
+                    RedditPost redditPost = new RedditPost(
+                            asdf1.get(x).getTitle(),
+                            asdf1.get(x).getThumbnail(),
+                            asdf1.get(x).getUrl(),
+                            asdf1.get(x).getSubreddit(),
+                            asdf1.get(x).getAuthor(),
+                            asdf1.get(x).getPermalink(),
+                            asdf1.get(x).getPost_id(),
+                            asdf1.get(x).getSubreddit_name_prefixed(),
+                            asdf1.get(x).getScore(),
+                            asdf1.get(x).getNumberOfComments(),
+                            asdf1.get(x).getPostedDate(),
+                            asdf1.get(x).getOver18()
+                    );
+
+                    // now add to existing array list
+                    redditPosts.add(redditPost);
+                } // for
+
+                // now put ArrayList into Adapter
+                mAdapter.swapData(redditPosts);
+
+            } // onChanged()
+
+        }); // asdf11.observe
+    } // getSavedRedditPosts()
 
 
     private void makeAToolBar() {

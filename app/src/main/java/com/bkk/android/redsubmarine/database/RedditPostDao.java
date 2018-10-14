@@ -18,16 +18,20 @@ import java.util.List;
 public interface RedditPostDao {
 
     // DONE: submission1, adding LiveData
-    @Query("SELECT * FROM redditpost ORDER BY id")
     // only LIST can be use in "DAO"
-    List<RedditPostEntry> loadAllSavedRedditPost();
+    @Query("SELECT * FROM redditpost ORDER BY id")
+    LiveData< List<RedditPostEntry> >  loadAllSavedRedditPost();
+    //    List<RedditPostEntry> loadAllSavedRedditPost();
+
+
+    @Query("SELECT * FROM redditpost ORDER BY id")
+    List<RedditPostEntry> loadAllSavedRedditPostWidget();
 //    LiveData< List<RedditPostEntry> > loadAllSavedRedditPost();
 
-    // don't addeding the same Reddit post twice
+
+    // don't add the same Reddit post to database twice
     @Insert( onConflict = OnConflictStrategy.REPLACE)
     void insertRedditPost(RedditPostEntry redditPostEntry);
-
-//    @Update()
 
     @Delete()
     void deleteRedditPost(RedditPostEntry redditPostEntry);
@@ -35,5 +39,7 @@ public interface RedditPostDao {
     // get 1 RedditPost
     @Query("SELECT * FROM redditpost WHERE post_id = :post_id")
     RedditPostEntry loadRedditPostEntryById(String post_id);
+
+    // @Update()
 
 } // class RedditPostDao
