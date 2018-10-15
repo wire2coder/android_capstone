@@ -3,6 +3,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
 android {
+
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.bkk.android.redsubmarine"
@@ -12,74 +13,83 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+//    signingConfigs {
+//        release {
+//            // You need to specify either an absolute path
+//            // or include the keystore file in the same directory as the build.gradle file
+//            storeFile file("my-release-key.jks")
+//            storePassword "password"
+//            keyAlias "my-alias"
+//            keyPassword "password"
+//        }
+//    }
+
+    // TODO: requirement for submission1
+//    signingConfigs {
+//        config {
+//            keyAlias 'MyAndroidKey'
+//            keyPassword 'myKeyPassword'
+//            storeFile file('/Users/bccadmin/Documents/JUNO/key/Untitled')
+//            storePassword 'password'
+//        }
+//    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+//            signingConfig signingConfigs.config
         }
     }
-}
+
+} // android
 
 dependencies {
-
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation 'com.android.support:support-v4:27.1.1'
     testImplementation 'junit:junit:4.12'
-
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
-
     // Retrofit Simple XML Converter
     implementation 'com.squareup.retrofit2:converter-simplexml:2.4.0'
-
     // Butter Knife
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     implementation 'com.jakewharton:butterknife:8.8.1'
-
     // Google Volley for making network request
     implementation 'com.mcxiaoke.volley:library:1.0.19'
-
     // Android RecyclerView
     implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation 'com.android.support:cardview-v7:27.1.1'
-
     // Picasso image processing library
     implementation 'com.squareup.picasso:picasso:2.71828'
-
     // Google Firebase Crash Report
     implementation 'com.google.firebase:firebase-crash:16.2.0'
-
     // Check for v11.4.2 or higher
     implementation 'com.google.firebase:firebase-core:16.0.3'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.5'
-
     // Navigation Drawer
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:design:27.1.1'
-
     // "Room"
     def room_version = "1.1.1"
     implementation "android.arch.persistence.room:runtime:$room_version"
-    annotationProcessor "android.arch.persistence.room:compiler:$room_version" // use kapt for Kotlin
-
+    annotationProcessor "android.arch.persistence.room:compiler:$room_version"
+    // use kapt for Kotlin
     // Stetho
     implementation 'com.facebook.stetho:stetho:1.5.0'
-
     // Firebase JobDispatcher
     implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
-
     // for LiveData and ViewModel, pre Android X
     def lifecycle_version = "1.1.1"
-
     // ViewModel and LiveData
     implementation "android.arch.lifecycle:extensions:$lifecycle_version"
-    annotationProcessor "android.arch.lifecycle:compiler:$lifecycle_version" // use kapt for Kotlin
-
+    annotationProcessor "android.arch.lifecycle:compiler:$lifecycle_version"
+    // use kapt for Kotlin
 }
 
 // Google Firebase

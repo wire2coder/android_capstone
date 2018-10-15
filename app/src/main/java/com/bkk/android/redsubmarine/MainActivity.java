@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
     private MainActivityAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    public SharedPreferences mSharedPreferences1;
+//    public SharedPreferences mSharedPreferences1;
     private AppDatabase mAppDatabase1;
 
     private ActionBarDrawerToggle drawerToggle1;
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
         makeAToolBar();
 
         // getting "SharedPreferences"
-        mSharedPreferences1 = getSharedPreferences("MainActivitySharePreferences", MODE_PRIVATE);
+//        mSharedPreferences1 = getSharedPreferences("MainActivitySharePreferences", MODE_PRIVATE);
 
         // getting a copy of Room database
         mAppDatabase1 = AppDatabase.getsInstance( getApplicationContext() );
@@ -175,15 +175,19 @@ public class MainActivity extends AppCompatActivity {
                 }); // setNavigationItemSelectedListener()
 
 
+        makeNavigationDrawerMove(); // << navigation menu on the RIGHT of the screen
+        makeFirebaseJobDispatcher(); // << start a background service with Firebase Job Dispatcher
+
         mRecyclerView = findViewById(R.id.rv_redditPosts);
         mRecyclerView.setHasFixedSize(true);
 
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        makeFirebaseJobDispatcher(); // << start a background service with Firebase Job Dispatcher
+        mAdapter = new MainActivityAdapter(redditPosts, this);
+        mRecyclerView.setAdapter(mAdapter); // >> mAdapter is EMPTY at this point
+        mAdapter.SetOnItemClickListener(redditPostClick1); // >> do something when you click on a "View item"
 
-        makeNavigationDrawerMove(); // << navigation menu on the RIGHT of the screen
 
         // Program starting point!
         // making network request to Reddit
@@ -242,6 +246,7 @@ public class MainActivity extends AppCompatActivity {
     } // getSavedRedditPostsFromViewModel()
 
 
+    // helper
     private void makeAToolBar() {
         // Set the toolbar as the action bar
         toolbar = findViewById(R.id.toolbar1);
@@ -282,17 +287,15 @@ public class MainActivity extends AppCompatActivity {
         } // else
 
         Log.d(LOG_TAG, "url1 " + url1);
-        volleyRequest(url1); // << Reddit homepage with JSON response
+
+        volleyRequest(url1); // << Reddit homepage with JSON response,
+        // this is where program execution flow to
 
     } // updateMainActivity()
 
 
     // helper
     public void volleyRequest(String string_url) {
-
-        mAdapter = new MainActivityAdapter(redditPosts, this);
-        mRecyclerView.setAdapter(mAdapter); // >> mAdapter is EMPTY at this point
-        mAdapter.SetOnItemClickListener(redditPostClick1); // >> do something when you click on a "View item"
 
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -303,6 +306,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
 //                Log.d(LOG_TAG, response.toString());
+
                 mAdapter.clearAdapter();
 
                 // parse JSON data
@@ -563,10 +567,13 @@ public class MainActivity extends AppCompatActivity {
 
 
     @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
 
-        int rvPosition = ((LinearLayoutManager)mRecyclerView.getLayoutManager()).findFirstVisibleItemPosition();
-        Log.d(LOG_TAG, "rvPosition " + String.valueOf(rvPosition));
+        // TODO:
+//        outState.putParcelableArrayList("key11", (ArrayList) redditPosts );
+
     }
+
+
 } // class MainActivity
