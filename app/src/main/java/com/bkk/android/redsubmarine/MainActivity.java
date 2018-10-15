@@ -74,7 +74,8 @@ public class MainActivity extends AppCompatActivity {
     private String subRedditName = "";
     private String sortRedditBy = "";
 
-    private List<RedditPost> redditPosts = new ArrayList<>();
+//    private List<RedditPost> redditPosts = new ArrayList<>();
+    private List<RedditPost> redditPosts;
 
     private RecyclerView mRecyclerView;
     private MainActivityAdapter mAdapter;
@@ -289,7 +290,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(LOG_TAG, "url1 " + url1);
 
         volleyRequest(url1); // << Reddit homepage with JSON response,
-        // this is where program execution flow to
+        // this is where program execution flow to volleyRequest()
 
     } // updateMainActivity()
 
