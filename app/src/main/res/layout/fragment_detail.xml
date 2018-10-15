@@ -33,7 +33,7 @@
                 android:layout_height="300dp"
                 android:layout_marginTop="?attr/actionBarSize"
                 android:scaleType="fitXY"
-                />
+                android:contentDescription="@string/content_description" />
 
             <LinearLayout
                 android:id="@+id/fragment_below_header"
@@ -48,7 +48,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_twotone_thumb_up_alt_24px"
                     android:layout_gravity="center_vertical"
-                    />
+                    android:contentDescription="@string/content_description" />
 
                 <!--text 1-->
                 <TextView
@@ -80,7 +80,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_baseline_favorite_24px"
                     android:layout_gravity="center_vertical"
-                    />
+                    android:contentDescription="@string/content_description" />
 
                 <!--image button 2-->
                 <CheckBox
@@ -101,7 +101,9 @@
                     android:layout_weight="0.15"
                     android:clickable="true"
                     android:focusable="true"
-                    android:src="@drawable/ic_baseline_toc_24px" />
+                    android:src="@drawable/ic_baseline_toc_24px"
+                    android:contentDescription="@string/content_description"
+                    />
 
             </LinearLayout>
 

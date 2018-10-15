@@ -64,5 +64,10 @@
     <string translatable="false" name="comments">comments</string>
     <string translatable="false" name="r_test">r/test</string>
 
+    <!-- transition name -->
+    <string name="transition_name">profile</string>
+
+    <!-- ImageView Content Description -->
+    <string name="content_description">A Reddit Post Image</string>
 
 </resources>

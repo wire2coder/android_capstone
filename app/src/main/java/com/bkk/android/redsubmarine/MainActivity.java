@@ -1,14 +1,18 @@
 package com.bkk.android.redsubmarine;
 
+import android.app.ActivityOptions;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Parcelable;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +27,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -111,11 +116,11 @@ public class MainActivity extends AppCompatActivity {
         mAppDatabase1 = AppDatabase.getsInstance( getApplicationContext() );
 
 
+
         // Navigation Drawer
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
         mDrawerMenu = drawer_view1.getMenu();
-
 
         String string1 = getString(R.string.all_sub_reddits);
         List<String> subRedditList1 = Arrays.asList(string1.split(","));
@@ -438,7 +443,15 @@ public class MainActivity extends AppCompatActivity {
 
             final Intent intent1 = new Intent(getBaseContext(), DetailActivity.class);
             intent1.putExtras(bundle1);
-            startActivity(intent1); // Start DetailActivity.java
+
+            // startActivity(intent1);
+
+            // submission 1 requirement, add a transition to go from 1 activity to another
+            startActivity(intent1
+              , ActivityOptions
+              .makeSceneTransitionAnimation(MainActivity.this).toBundle()); // Start DetailActivity.java
+
+
 
         } // onItemClick()
     };
@@ -549,4 +562,11 @@ public class MainActivity extends AppCompatActivity {
     } // makeFirebaseJobDispatcher()
 
 
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+
+        int rvPosition = ((LinearLayoutManager)mRecyclerView.getLayoutManager()).findFirstVisibleItemPosition();
+        Log.d(LOG_TAG, "rvPosition " + String.valueOf(rvPosition));
+    }
 } // class MainActivity

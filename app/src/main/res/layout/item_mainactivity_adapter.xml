@@ -32,8 +32,11 @@
            android:layout_height="200dp"
            android:scaleType="centerCrop"
            android:layout_below="@+id/tv_post_title"
-           />
 
+           android:transitionName="@string/transition_name"
+           android:contentDescription="@string/content_description" />
+
+        <!-- TODO: submission 1 requirement, added transition-->
 
         <LinearLayout
             android:id="@+id/ll_util_bar"
@@ -48,6 +51,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_twotone_thumb_up_alt_24px"
                 android:paddingRight="8dp"
+                android:contentDescription="@string/content_description"
                 />
 
             <TextView
@@ -64,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_twotone_comment_24px"
                 android:paddingRight="8dp"
-                />
+                android:contentDescription="@string/content_description" />
 
             <TextView
                 android:id="@+id/tv_comments_counter"
