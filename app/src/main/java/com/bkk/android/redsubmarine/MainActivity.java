@@ -93,6 +93,12 @@ public class MainActivity extends AppCompatActivity {
         @BindView(R.id.drawer_view1) NavigationView drawer_view1;
 
 
+    private int RV_POSITION;
+    private final String SAVED_RECYCLER_VIEW_STATUS_ID = "SAVED_RECYCLER_VIEW_STATUS_ID";
+    private final String SAVED_RECYCLER_VIEW_DATASET_ID = "SAVED_RECYCLER_VIEW_DATASET_ID";
+    private static Parcelable recyclerViewState;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,40 +146,40 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem1) {
 
-                        // This is the action_favorites button
-                        // R.id.action_favorites
-                        // /menu/drawer_view.xml
-                        if (menuItem1.getGroupId() == R.id.group_favorite) {
+            // This is the action_favorites button
+            // R.id.action_favorites
+            // /menu/drawer_view.xml
+            if (menuItem1.getGroupId() == R.id.group_favorite) {
 
-                            // clear the data in the ArrayList
-                            redditPosts.clear();
-                            Log.d(LOG_TAG, "redditPosts.clear() ");
+                // clear the data in the ArrayList
+                redditPosts.clear();
+                Log.d(LOG_TAG, "redditPosts.clear() ");
 
 
-                            // getting data from Database, and update the Adapter
-                            getSavedRedditPostsFromViewModel();
+                // getting data from Database, and update the Adapter
+                getSavedRedditPostsFromViewModel();
 
-                            // set the title of the "top bar"
-                            toolbar.setTitle( getString(R.string.favorited_posts) );
+                // set the title of the "top bar"
+                toolbar.setTitle( getString(R.string.favorited_posts) );
 
-                            // set items as selected to persist high light
-                            // menuItem.setCheckable(true);
+                // set items as selected to persist high light
+                // menuItem.setCheckable(true);
 
-//                            return true; // EAT the "event", if you use FALSE here, to execution won't flow down to mDrawerLayout.closeDrawers();
-                        } else {
+    //                            return true; // EAT the "event", if you use FALSE here, to execution won't flow down to mDrawerLayout.closeDrawers();
+            } else {
 
-                            String subRedditName = menuItem1.toString();
-                            Log.d(LOG_TAG,"subRedditName " + subRedditName);
-                            updateMainActivity( subRedditName );
+                String subRedditName = menuItem1.toString();
+                Log.d(LOG_TAG,"subRedditName " + subRedditName);
+                updateMainActivity( subRedditName );
 
-                        } // else
+            } // else
 
-                        // close drawer when item is tapped
-                        mDrawerLayout.closeDrawers();
+            // close drawer when item is tapped
+            mDrawerLayout.closeDrawers();
 
-                        return true; // EAT the "event"
-                    } //onNavigationMenuSelected()
-                }); // setNavigationItemSelectedListener()
+            return true; // EAT the "event"
+        } //onNavigationMenuSelected()
+    }); // setNavigationItemSelectedListener()
 
 
         makeNavigationDrawerMove(); // << navigation menu on the RIGHT of the screen
@@ -185,14 +191,27 @@ public class MainActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new MainActivityAdapter(redditPosts, this);
-        mRecyclerView.setAdapter(mAdapter); // >> mAdapter is EMPTY at this point
-        mAdapter.SetOnItemClickListener(redditPostClick1); // >> do something when you click on a "View item"
 
+        if ( savedInstanceState == null ) {
+            Log.d(LOG_TAG, "savedInstanceState == null");
 
-        // Program starting point!
-        // making network request to Reddit
-        updateMainActivity(Strings.HOME);
+            // Program starting point!, // making network request to Reddit
+            updateMainActivity(Strings.HOME);
+        } else {
+            Log.d(LOG_TAG, "savedInstanceState != null");
+
+            // gettting data out of "savedInstanceState"
+            redditPosts = savedInstanceState.getParcelableArrayList(SAVED_RECYCLER_VIEW_DATASET_ID);
+
+            // recyclerViewState = savedInstanceState.getParcelable(SAVED_RECYCLER_VIEW_STATUS_ID);
+            // mRecyclerView.getLayoutManager().onRestoreInstanceState(recyclerViewState); << might not need this
+
+            mAdapter = new MainActivityAdapter(redditPosts, this);
+            mRecyclerView.setAdapter(mAdapter); // >> mAdapter is EMPTY at this point
+            mAdapter.SetOnItemClickListener(redditPostClick1); // >> do something when you click on a "View item"
+
+        } // else
+
 
     } // onCreate
 
@@ -298,6 +317,12 @@ public class MainActivity extends AppCompatActivity {
     // helper
     public void volleyRequest(String string_url) {
 
+        // need these for maintaining the RecyclerView position
+        mAdapter = new MainActivityAdapter(redditPosts, context1);
+        mRecyclerView.setAdapter(mAdapter);
+        mAdapter.SetOnItemClickListener(redditPostClick1); // >> do something when you click on a "View item"
+
+
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
 
@@ -308,7 +333,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
 //                Log.d(LOG_TAG, response.toString());
 
-                mAdapter.clearAdapter();
+                mAdapter.clearAdapter(); // << clear adapter to prevent overlap, NEED THIS
 
                 // parse JSON data
                 // data(JSON object) >> children(JSON array) >> data(JSON object)
@@ -569,12 +594,24 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
+
         super.onSaveInstanceState(outState);
 
-        // TODO:
-//        outState.putParcelableArrayList("key11", (ArrayList) redditPosts );
+//        int rvPosition = ((LinearLayoutManager)mRecyclerView.getLayoutManager()).findFirstVisibleItemPosition();
+//        outState.putInt("RV_POSITION", rvPosition);
+//        Log.d(LOG_TAG, "RV_POSITION " + String.valueOf(rvPosition));
+
+        Parcelable listState = mRecyclerView.getLayoutManager().onSaveInstanceState();
+
+        // putting RecyclerView Position
+        outState.putParcelable(SAVED_RECYCLER_VIEW_STATUS_ID, listState);
+
+        // putting RecyclerView items
+        outState.putParcelableArrayList(SAVED_RECYCLER_VIEW_DATASET_ID, (ArrayList) redditPosts);
+
+        super.onSaveInstanceState(outState);
 
     }
 
-
 } // class MainActivity
+
