@@ -25,22 +25,22 @@ android {
 //        }
 //    }
 
-    // TODO: requirement for submission1
-//    signingConfigs {
-//        config {
-//            keyAlias 'MyAndroidKey'
-//            keyPassword 'myKeyPassword'
-//            storeFile file('/Users/bccadmin/Documents/JUNO/key/Untitled')
-//            storePassword 'password'
-//        }
-//    }
+    // DONE: requirement for submission1
+    signingConfigs {
+        config {
+            keyAlias 'key'
+            keyPassword 'password1'
+            storeFile file('/Users/bccadmin/Documents/JUNO/key.jks')
+            storePassword 'password1'
+        }
+    }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
-//            signingConfig signingConfigs.config
+            signingConfig signingConfigs.config
         }
     }
 
