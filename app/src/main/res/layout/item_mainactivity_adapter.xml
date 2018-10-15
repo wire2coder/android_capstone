@@ -36,7 +36,6 @@
            android:transitionName="@string/transition_name"
            android:contentDescription="@string/content_description" />
 
-        <!-- TODO: submission 1 requirement, added transition-->
 
         <LinearLayout
             android:id="@+id/ll_util_bar"
